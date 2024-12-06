@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ネットワーク情報</title>
+    <style>
+        body {
+            background-color: #4CAF50;
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            padding: 50px;
+            margin: 0;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            max-width: 600px;
+            margin: auto;
+        }
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+        }
+        p {
+            font-size: 1.2rem;
+            margin: 10px 0;
+        }
+        .button {
+            background-color: #fff;
+            color: #4CAF50;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 1rem;
+                cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .button:hover {
+            background-color: #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>ネットワーク情報</h1>
+        <p id="ipAddress">IPアドレス: ロード中...</p>
+        <p id="networkStatus">ネットワーク状態: 正常です</p>
+        <p id="currentTime">現在時刻: ロード中...</p>
+        <button class="button" onclick="window.location.reload();">更新</button>
+    </div>
+
+    <script>
+        // IPアドレスを取得する関数
+        async function getIPAddress() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                document.getElementById('ipAddress').innerText = 'IPアドレス: ' + data.ip;
+            } catch (error) {
+                console.error('IPアドレスの取得に失敗しました', error);
+                document.getElementById('ipAddress').innerText = 'IPアドレスの取得に失敗しました';
+            }
+        }
+
+        // 現在時刻を取得する関数
+        function getCurrentTime() {
+            const now = new Date();
+            return now.toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' });
+        }
+
+        // DOMの読み込みが完了したら情報を表示
+        document.addEventListener('DOMContentLoaded', () => {
+            getIPAddress();  // IPアドレスを取得
+            document.getElementById('currentTime').innerText = '現在時刻: ' + getCurrentTime(); // 現在時刻の表示
+        });
+    </script>
+
+</body>
+</html>
